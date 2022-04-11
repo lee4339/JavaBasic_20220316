@@ -1,4 +1,4 @@
-package J11_클래스_접근지정;
+package j11_클래스_접근지정;
 
 public class User_J11 {
 	private String username;
