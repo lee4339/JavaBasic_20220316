@@ -3,6 +3,7 @@ package j17_최상위클래스.config;
 import java.util.Scanner;
 
 import j17_최상위클래스.controller.MainController;
+import j17_최상위클래스.repository.user.UserArray;
 import j17_최상위클래스.service.UserService;
 import j17_최상위클래스.service.UserServiceImpl;
 import lombok.Getter;
@@ -22,8 +23,10 @@ public class Context {
 		// 일반객체
 		scanner = new Scanner(System.in);
 		
+		UserArray userArray = new UserArray();
+		
 		// 서비스객체
-		userService = new UserServiceImpl();
+		userService = new UserServiceImpl(userArray);
 		
 		// 컨트롤러 객체
 		mainController = new MainController(instance, userService);

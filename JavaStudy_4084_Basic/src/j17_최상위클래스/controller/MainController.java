@@ -11,8 +11,24 @@ public class MainController {
 	private final Context context;
 	private final UserService userService;
 	
-	public void index() { 
+	public void signup() { 
 		User user = userService.addUser(context.getScanner());
+		System.out.println("[추가된 사용자정보]");
+		System.out.println(user);
+		
+	}
+	
+	public void showUserAll() {
+		System.out.println("[전체 사용자 리스트]");
+		for(User user : userService.getUserAll()) {
+			System.out.println(user);
+		}
+	}
+	
+	public void searchUser() {
+		System.out.println("[사용자 조회]");
+		User user = userService.getUserByUsername(context.getInstance().getScanner());
+		System.out.println("[조회된 사용자 정보]");
 		System.out.println(user);
 	}
 

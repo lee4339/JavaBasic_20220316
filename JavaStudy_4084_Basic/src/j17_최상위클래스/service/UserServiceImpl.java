@@ -3,8 +3,14 @@ package j17_최상위클래스.service;
 import java.util.Scanner;
 
 import j17_최상위클래스.repository.user.User;
+import j17_최상위클래스.repository.user.UserArray;
+import lombok.RequiredArgsConstructor;
 
+
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+	private final UserArray userArray;
+	
 
 	@Override
 	public User addUser(Scanner scanner) {
@@ -19,24 +25,38 @@ public class UserServiceImpl implements UserService {
 		System.out.print("이메일: ");
 		email = scanner.nextLine();
 		
-		return User.builder()
+		User user = User.builder()
 				.username(username)
 				.password(password)
 				.name(name)
 				.email(email)
 				.build();
+		
+		userArray.add(user);
+		
+		return user;
 	}
 
 	@Override
-	public User getUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUserByUsername(Scanner scanner) {
+		System.out.println("찾으실 사용자의 아이디를 입력하세요: ");
+		String username = scanner.nextLine();
+		
+		User[] userList = userArray.getuserArray();
+		User user = null;
+		for(User tempUser : userList) {
+			if(tempUser.getUsername().equals(username)) {
+				user = tempUser;
+				break;
+			}
+		}
+		return user;
 	}
 
 	@Override
 	public User[] getUserAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return userArray.getuserArray();
 	}
 	
 
