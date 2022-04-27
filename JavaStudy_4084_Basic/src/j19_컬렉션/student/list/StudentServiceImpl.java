@@ -1,8 +1,9 @@
-package j19_컬렉션.student;
+package j19_컬렉션.student.list;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import j19_컬렉션.student.Student;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
