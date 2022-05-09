@@ -150,5 +150,87 @@ public class UserDao {
 		return userMap;
 		
 	}
+	public int inserUserMst(ArrayList<UserMst> userList) {
+		StringBuilder sqlBuilder = new StringBuilder();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			sqlBuilder.append("INSERT INTO\r\n"
+					+ "	user_mst\r\n"
+					+ "VALUES(\r\n");
+			for(int i = 0; i < userList.size(); i++) {
+				
+				sqlBuilder.append("(\r\n"
+						+ "	0,\r\n"
+						+ "	?,\r\n"
+						+ "	?,\r\n"
+						+ "	?,\r\n"
+						+ "	?,\r\n"
+						+ "	NOW(),\r\n"
+						+ "	NOW()\r\n"
+						+ "),");
+				
+//				if(i != userList.size() - 1) {
+//					sqlBuilder.append(",");
+				}
+			sqlBuilder.delete(sqlBuilder.length() - 1, sqlBuilder.length());	
+			
+			pstmt = con.prepareStatement(sqlBuilder.toString());
+			for(int i = 0; i < userList.size(); i++) {
+				pstmt.setString((i * 4) + 1, userList.get(i).getEmail());
+				pstmt.setString((i * 4) + 2, userList.get(i).getName());
+				pstmt.setString((i * 4) + 3, userList.get(i).getUsername());
+				pstmt.setString((i * 4) + 4, userList.get(i).getPassword());
+			}
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return result;
+	}
+	
+	public int updateUserDtl(String username, UserDtl userDtl) {
+		String sql = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE\r\n"
+					+ "	user_dtl\r\n"
+					+ "SET\r\n"
+					+ "	address = ?,\r\n"
+					+ "	phone = ?,\r\n"
+					+ "	gender = ?\r\n"
+					+ "WHERE\r\n"
+					+ "	usercode = (select\r\n"
+					+ "						usercode\r\n"
+					+ "					from\r\n"
+					+ "						user_mst\r\n"
+					+ "					where\r\n"
+					+ "						username = ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userDtl.getAddress());
+			pstmt.setString(2, userDtl.getPhone());
+			pstmt.setInt(3, userDtl.getGender());
+			pstmt.setString(4, username);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
 	
 }
